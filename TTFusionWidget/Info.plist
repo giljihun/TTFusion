@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>KeyringAnim00.ttf</string>
+		<string>KeyringAnim01.ttf</string>
+		<string>KeyringAnim02.ttf</string>
+		<string>KeyringAnim03.ttf</string>
+		<string>KeyringAnim04.ttf</string>
+		<string>KeyringAnim05.ttf</string>
+		<string>KeyringAnim06.ttf</string>
+		<string>KeyringAnim07.ttf</string>
+		<string>KeyringAnim08.ttf</string>
+		<string>KeyringAnim09.ttf</string>
+		<string>KeyringAnim10.ttf</string>
+		<string>KeyringAnim11.ttf</string>
+		<string>KeyringAnim12.ttf</string>
+		<string>KeyringAnim13.ttf</string>
+		<string>KeyringAnim14.ttf</string>
+		<string>KeyringAnim15.ttf</string>
+		<string>KeyringAnim16.ttf</string>
+		<string>KeyringAnim17.ttf</string>
+		<string>KeyringAnim18.ttf</string>
+		<string>KeyringAnim19.ttf</string>
+		<string>KeyringAnim20.ttf</string>
+		<string>KeyringAnim21.ttf</string>
+		<string>KeyringAnim22.ttf</string>
+		<string>KeyringAnim23.ttf</string>
+		<string>KeyringAnim24.ttf</string>
+		<string>KeyringAnim25.ttf</string>
+		<string>KeyringAnim26.ttf</string>
+		<string>KeyringAnim27.ttf</string>
+		<string>KeyringAnim28.ttf</string>
+		<string>KeyringAnim29.ttf</string>
+		<string>BlinkMask.otf</string>
+	</array>
+	<key>NSExtension</key>
+	<dict>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.widgetkit-extension</string>
+	</dict>
+</dict>
+</plist>
