@@ -10,38 +10,6 @@
 		4C2527572F4D9AF6003CC5AD /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2527562F4D9AF6003CC5AD /* WidgetKit.framework */; };
 		4C2527592F4D9AF6003CC5AD /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C2527582F4D9AF6003CC5AD /* SwiftUI.framework */; };
 		4C2527682F4D9AF7003CC5AD /* TTFusionWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4C2527542F4D9AF6003CC5AD /* TTFusionWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		4C2527702F4D9BEF003CC5AD /* TTFusionWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C25276E2F4D9BEF003CC5AD /* TTFusionWidget.swift */; };
-		4CA200002F4E0000003CC5AD /* KeyringAnim00.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100002F4E0000003CC5AD /* KeyringAnim00.ttf */; };
-		4CA200012F4E0000003CC5AD /* KeyringAnim01.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100012F4E0000003CC5AD /* KeyringAnim01.ttf */; };
-		4CA200022F4E0000003CC5AD /* KeyringAnim02.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100022F4E0000003CC5AD /* KeyringAnim02.ttf */; };
-		4CA200032F4E0000003CC5AD /* KeyringAnim03.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100032F4E0000003CC5AD /* KeyringAnim03.ttf */; };
-		4CA200042F4E0000003CC5AD /* KeyringAnim04.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100042F4E0000003CC5AD /* KeyringAnim04.ttf */; };
-		4CA200052F4E0000003CC5AD /* KeyringAnim05.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100052F4E0000003CC5AD /* KeyringAnim05.ttf */; };
-		4CA200062F4E0000003CC5AD /* KeyringAnim06.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100062F4E0000003CC5AD /* KeyringAnim06.ttf */; };
-		4CA200072F4E0000003CC5AD /* KeyringAnim07.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100072F4E0000003CC5AD /* KeyringAnim07.ttf */; };
-		4CA200082F4E0000003CC5AD /* KeyringAnim08.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100082F4E0000003CC5AD /* KeyringAnim08.ttf */; };
-		4CA200092F4E0000003CC5AD /* KeyringAnim09.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100092F4E0000003CC5AD /* KeyringAnim09.ttf */; };
-		4CA2000A2F4E0000003CC5AD /* KeyringAnim10.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA1000A2F4E0000003CC5AD /* KeyringAnim10.ttf */; };
-		4CA2000B2F4E0000003CC5AD /* KeyringAnim11.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA1000B2F4E0000003CC5AD /* KeyringAnim11.ttf */; };
-		4CA2000C2F4E0000003CC5AD /* KeyringAnim12.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA1000C2F4E0000003CC5AD /* KeyringAnim12.ttf */; };
-		4CA2000D2F4E0000003CC5AD /* KeyringAnim13.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA1000D2F4E0000003CC5AD /* KeyringAnim13.ttf */; };
-		4CA2000E2F4E0000003CC5AD /* KeyringAnim14.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA1000E2F4E0000003CC5AD /* KeyringAnim14.ttf */; };
-		4CA2000F2F4E0000003CC5AD /* KeyringAnim15.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA1000F2F4E0000003CC5AD /* KeyringAnim15.ttf */; };
-		4CA200102F4E0000003CC5AD /* KeyringAnim16.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100102F4E0000003CC5AD /* KeyringAnim16.ttf */; };
-		4CA200112F4E0000003CC5AD /* KeyringAnim17.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100112F4E0000003CC5AD /* KeyringAnim17.ttf */; };
-		4CA200122F4E0000003CC5AD /* KeyringAnim18.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100122F4E0000003CC5AD /* KeyringAnim18.ttf */; };
-		4CA200132F4E0000003CC5AD /* KeyringAnim19.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100132F4E0000003CC5AD /* KeyringAnim19.ttf */; };
-		4CA200142F4E0000003CC5AD /* KeyringAnim20.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100142F4E0000003CC5AD /* KeyringAnim20.ttf */; };
-		4CA200152F4E0000003CC5AD /* KeyringAnim21.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100152F4E0000003CC5AD /* KeyringAnim21.ttf */; };
-		4CA200162F4E0000003CC5AD /* KeyringAnim22.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100162F4E0000003CC5AD /* KeyringAnim22.ttf */; };
-		4CA200172F4E0000003CC5AD /* KeyringAnim23.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100172F4E0000003CC5AD /* KeyringAnim23.ttf */; };
-		4CA200182F4E0000003CC5AD /* KeyringAnim24.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100182F4E0000003CC5AD /* KeyringAnim24.ttf */; };
-		4CA200192F4E0000003CC5AD /* KeyringAnim25.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA100192F4E0000003CC5AD /* KeyringAnim25.ttf */; };
-		4CA2001A2F4E0000003CC5AD /* KeyringAnim26.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA1001A2F4E0000003CC5AD /* KeyringAnim26.ttf */; };
-		4CA2001B2F4E0000003CC5AD /* KeyringAnim27.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA1001B2F4E0000003CC5AD /* KeyringAnim27.ttf */; };
-		4CA2001C2F4E0000003CC5AD /* KeyringAnim28.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA1001C2F4E0000003CC5AD /* KeyringAnim28.ttf */; };
-		4CA2001D2F4E0000003CC5AD /* KeyringAnim29.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA1001D2F4E0000003CC5AD /* KeyringAnim29.ttf */; };
-		4CA2001E2F4E0000003CC5AD /* BlinkMask.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA1001E2F4E0000003CC5AD /* BlinkMask.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,48 +41,34 @@
 		4C2527542F4D9AF6003CC5AD /* TTFusionWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TTFusionWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C2527562F4D9AF6003CC5AD /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		4C2527582F4D9AF6003CC5AD /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		4C25276E2F4D9BEF003CC5AD /* TTFusionWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTFusionWidget.swift; sourceTree = "<group>"; };
-		4C2527722F4DBD83003CC5AD /* TTFusionWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TTFusionWidgetExtension.entitlements; sourceTree = "<group>"; };
-		4CA100002F4E0000003CC5AD /* KeyringAnim00.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim00.ttf; sourceTree = "<group>"; };
-		4CA100012F4E0000003CC5AD /* KeyringAnim01.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim01.ttf; sourceTree = "<group>"; };
-		4CA100022F4E0000003CC5AD /* KeyringAnim02.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim02.ttf; sourceTree = "<group>"; };
-		4CA100032F4E0000003CC5AD /* KeyringAnim03.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim03.ttf; sourceTree = "<group>"; };
-		4CA100042F4E0000003CC5AD /* KeyringAnim04.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim04.ttf; sourceTree = "<group>"; };
-		4CA100052F4E0000003CC5AD /* KeyringAnim05.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim05.ttf; sourceTree = "<group>"; };
-		4CA100062F4E0000003CC5AD /* KeyringAnim06.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim06.ttf; sourceTree = "<group>"; };
-		4CA100072F4E0000003CC5AD /* KeyringAnim07.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim07.ttf; sourceTree = "<group>"; };
-		4CA100082F4E0000003CC5AD /* KeyringAnim08.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim08.ttf; sourceTree = "<group>"; };
-		4CA100092F4E0000003CC5AD /* KeyringAnim09.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim09.ttf; sourceTree = "<group>"; };
-		4CA1000A2F4E0000003CC5AD /* KeyringAnim10.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim10.ttf; sourceTree = "<group>"; };
-		4CA1000B2F4E0000003CC5AD /* KeyringAnim11.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim11.ttf; sourceTree = "<group>"; };
-		4CA1000C2F4E0000003CC5AD /* KeyringAnim12.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim12.ttf; sourceTree = "<group>"; };
-		4CA1000D2F4E0000003CC5AD /* KeyringAnim13.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim13.ttf; sourceTree = "<group>"; };
-		4CA1000E2F4E0000003CC5AD /* KeyringAnim14.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim14.ttf; sourceTree = "<group>"; };
-		4CA1000F2F4E0000003CC5AD /* KeyringAnim15.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim15.ttf; sourceTree = "<group>"; };
-		4CA100102F4E0000003CC5AD /* KeyringAnim16.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim16.ttf; sourceTree = "<group>"; };
-		4CA100112F4E0000003CC5AD /* KeyringAnim17.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim17.ttf; sourceTree = "<group>"; };
-		4CA100122F4E0000003CC5AD /* KeyringAnim18.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim18.ttf; sourceTree = "<group>"; };
-		4CA100132F4E0000003CC5AD /* KeyringAnim19.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim19.ttf; sourceTree = "<group>"; };
-		4CA100142F4E0000003CC5AD /* KeyringAnim20.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim20.ttf; sourceTree = "<group>"; };
-		4CA100152F4E0000003CC5AD /* KeyringAnim21.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim21.ttf; sourceTree = "<group>"; };
-		4CA100162F4E0000003CC5AD /* KeyringAnim22.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim22.ttf; sourceTree = "<group>"; };
-		4CA100172F4E0000003CC5AD /* KeyringAnim23.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim23.ttf; sourceTree = "<group>"; };
-		4CA100182F4E0000003CC5AD /* KeyringAnim24.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim24.ttf; sourceTree = "<group>"; };
-		4CA100192F4E0000003CC5AD /* KeyringAnim25.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim25.ttf; sourceTree = "<group>"; };
-		4CA1001A2F4E0000003CC5AD /* KeyringAnim26.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim26.ttf; sourceTree = "<group>"; };
-		4CA1001B2F4E0000003CC5AD /* KeyringAnim27.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim27.ttf; sourceTree = "<group>"; };
-		4CA1001C2F4E0000003CC5AD /* KeyringAnim28.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim28.ttf; sourceTree = "<group>"; };
-		4CA1001D2F4E0000003CC5AD /* KeyringAnim29.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyringAnim29.ttf; sourceTree = "<group>"; };
-		4CA1001E2F4E0000003CC5AD /* BlinkMask.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BlinkMask.otf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		4C25267C2F4D5A80003CC5AD /* TTFusion */ = {
+		4C25267C2F4D5A80003CC5AD /* App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = TTFusion;
+			path = App;
+			sourceTree = "<group>";
+		};
+		4C25276F2F4D9BEF003CC5AD /* Widget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4C25277F2F4E1000003CC5AD /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
+			);
+			path = Widget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4C25277F2F4E1000003CC5AD /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+				TTFusionWidgetExtension.entitlements,
+			);
+			target = 4C2527532F4D9AF6003CC5AD /* TTFusionWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		4C2526772F4D5A80003CC5AD /* Frameworks */ = {
@@ -139,10 +93,8 @@
 		4C2526712F4D5A80003CC5AD = {
 			isa = PBXGroup;
 			children = (
-				4C2527722F4DBD83003CC5AD /* TTFusionWidgetExtension.entitlements */,
-				4C25267C2F4D5A80003CC5AD /* TTFusion */,
-				4C25276F2F4D9BEF003CC5AD /* TTFusionWidget */,
-				4CA300002F4E0000003CC5AD /* Fonts */,
+				4C25267C2F4D5A80003CC5AD /* App */,
+				4C25276F2F4D9BEF003CC5AD /* Widget */,
 				4C2527552F4D9AF6003CC5AD /* Frameworks */,
 				4C25267B2F4D5A80003CC5AD /* Products */,
 			);
@@ -166,53 +118,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		4C25276F2F4D9BEF003CC5AD /* TTFusionWidget */ = {
-			isa = PBXGroup;
-			children = (
-				4C25276E2F4D9BEF003CC5AD /* TTFusionWidget.swift */,
-			);
-			path = TTFusionWidget;
-			sourceTree = "<group>";
-		};
-		4CA300002F4E0000003CC5AD /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				4CA100002F4E0000003CC5AD /* KeyringAnim00.ttf */,
-				4CA100012F4E0000003CC5AD /* KeyringAnim01.ttf */,
-				4CA100022F4E0000003CC5AD /* KeyringAnim02.ttf */,
-				4CA100032F4E0000003CC5AD /* KeyringAnim03.ttf */,
-				4CA100042F4E0000003CC5AD /* KeyringAnim04.ttf */,
-				4CA100052F4E0000003CC5AD /* KeyringAnim05.ttf */,
-				4CA100062F4E0000003CC5AD /* KeyringAnim06.ttf */,
-				4CA100072F4E0000003CC5AD /* KeyringAnim07.ttf */,
-				4CA100082F4E0000003CC5AD /* KeyringAnim08.ttf */,
-				4CA100092F4E0000003CC5AD /* KeyringAnim09.ttf */,
-				4CA1000A2F4E0000003CC5AD /* KeyringAnim10.ttf */,
-				4CA1000B2F4E0000003CC5AD /* KeyringAnim11.ttf */,
-				4CA1000C2F4E0000003CC5AD /* KeyringAnim12.ttf */,
-				4CA1000D2F4E0000003CC5AD /* KeyringAnim13.ttf */,
-				4CA1000E2F4E0000003CC5AD /* KeyringAnim14.ttf */,
-				4CA1000F2F4E0000003CC5AD /* KeyringAnim15.ttf */,
-				4CA100102F4E0000003CC5AD /* KeyringAnim16.ttf */,
-				4CA100112F4E0000003CC5AD /* KeyringAnim17.ttf */,
-				4CA100122F4E0000003CC5AD /* KeyringAnim18.ttf */,
-				4CA100132F4E0000003CC5AD /* KeyringAnim19.ttf */,
-				4CA100142F4E0000003CC5AD /* KeyringAnim20.ttf */,
-				4CA100152F4E0000003CC5AD /* KeyringAnim21.ttf */,
-				4CA100162F4E0000003CC5AD /* KeyringAnim22.ttf */,
-				4CA100172F4E0000003CC5AD /* KeyringAnim23.ttf */,
-				4CA100182F4E0000003CC5AD /* KeyringAnim24.ttf */,
-				4CA100192F4E0000003CC5AD /* KeyringAnim25.ttf */,
-				4CA1001A2F4E0000003CC5AD /* KeyringAnim26.ttf */,
-				4CA1001B2F4E0000003CC5AD /* KeyringAnim27.ttf */,
-				4CA1001C2F4E0000003CC5AD /* KeyringAnim28.ttf */,
-				4CA1001D2F4E0000003CC5AD /* KeyringAnim29.ttf */,
-				4CA1001E2F4E0000003CC5AD /* BlinkMask.otf */,
-			);
-			name = Fonts;
-			path = Font;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -231,7 +136,7 @@
 				4C2527672F4D9AF7003CC5AD /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				4C25267C2F4D5A80003CC5AD /* TTFusion */,
+				4C25267C2F4D5A80003CC5AD /* App */,
 			);
 			name = TTFusion;
 			packageProductDependencies = (
@@ -251,6 +156,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				4C25276F2F4D9BEF003CC5AD /* Widget */,
 			);
 			name = TTFusionWidgetExtension;
 			packageProductDependencies = (
@@ -309,37 +217,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CA200002F4E0000003CC5AD /* KeyringAnim00.ttf in Resources */,
-				4CA200012F4E0000003CC5AD /* KeyringAnim01.ttf in Resources */,
-				4CA200022F4E0000003CC5AD /* KeyringAnim02.ttf in Resources */,
-				4CA200032F4E0000003CC5AD /* KeyringAnim03.ttf in Resources */,
-				4CA200042F4E0000003CC5AD /* KeyringAnim04.ttf in Resources */,
-				4CA200052F4E0000003CC5AD /* KeyringAnim05.ttf in Resources */,
-				4CA200062F4E0000003CC5AD /* KeyringAnim06.ttf in Resources */,
-				4CA200072F4E0000003CC5AD /* KeyringAnim07.ttf in Resources */,
-				4CA200082F4E0000003CC5AD /* KeyringAnim08.ttf in Resources */,
-				4CA200092F4E0000003CC5AD /* KeyringAnim09.ttf in Resources */,
-				4CA2000A2F4E0000003CC5AD /* KeyringAnim10.ttf in Resources */,
-				4CA2000B2F4E0000003CC5AD /* KeyringAnim11.ttf in Resources */,
-				4CA2000C2F4E0000003CC5AD /* KeyringAnim12.ttf in Resources */,
-				4CA2000D2F4E0000003CC5AD /* KeyringAnim13.ttf in Resources */,
-				4CA2000E2F4E0000003CC5AD /* KeyringAnim14.ttf in Resources */,
-				4CA2000F2F4E0000003CC5AD /* KeyringAnim15.ttf in Resources */,
-				4CA200102F4E0000003CC5AD /* KeyringAnim16.ttf in Resources */,
-				4CA200112F4E0000003CC5AD /* KeyringAnim17.ttf in Resources */,
-				4CA200122F4E0000003CC5AD /* KeyringAnim18.ttf in Resources */,
-				4CA200132F4E0000003CC5AD /* KeyringAnim19.ttf in Resources */,
-				4CA200142F4E0000003CC5AD /* KeyringAnim20.ttf in Resources */,
-				4CA200152F4E0000003CC5AD /* KeyringAnim21.ttf in Resources */,
-				4CA200162F4E0000003CC5AD /* KeyringAnim22.ttf in Resources */,
-				4CA200172F4E0000003CC5AD /* KeyringAnim23.ttf in Resources */,
-				4CA200182F4E0000003CC5AD /* KeyringAnim24.ttf in Resources */,
-				4CA200192F4E0000003CC5AD /* KeyringAnim25.ttf in Resources */,
-				4CA2001A2F4E0000003CC5AD /* KeyringAnim26.ttf in Resources */,
-				4CA2001B2F4E0000003CC5AD /* KeyringAnim27.ttf in Resources */,
-				4CA2001C2F4E0000003CC5AD /* KeyringAnim28.ttf in Resources */,
-				4CA2001D2F4E0000003CC5AD /* KeyringAnim29.ttf in Resources */,
-				4CA2001E2F4E0000003CC5AD /* BlinkMask.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,7 +234,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C2527702F4D9BEF003CC5AD /* TTFusionWidget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,7 +374,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = TTFusion/TTFusion.entitlements;
+				CODE_SIGN_ENTITLEMENTS = App/TTFusion.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5M5VM39FM9;
@@ -531,7 +407,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = TTFusion/TTFusion.entitlements;
+				CODE_SIGN_ENTITLEMENTS = App/TTFusion.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5M5VM39FM9;
@@ -564,12 +440,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_ENTITLEMENTS = TTFusionWidgetExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Widget/TTFusionWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5M5VM39FM9;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TTFusionWidget/Info.plist;
+				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TTFusionWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -595,12 +471,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_ENTITLEMENTS = TTFusionWidgetExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Widget/TTFusionWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5M5VM39FM9;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TTFusionWidget/Info.plist;
+				INFOPLIST_FILE = Widget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TTFusionWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
