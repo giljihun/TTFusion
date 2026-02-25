@@ -14,15 +14,19 @@
 
 ## Demo
 
+<img src="https://github.com/user-attachments/assets/bdd72f1b-dd7b-4007-85ac-6a003eb7cde5" width=300>
+
 <!-- TODO: Add Widgetnimation demo GIF here -->
 <!-- ![Demo](assets/demo.gif) -->
 
-> This is a **sample app** that demonstrates animated widgets with user images.
-  The included keyring frames (`keyring_00–29.png`) are test assets for the swinging animation.
+This is a **sample app** that demonstrates animated widgets with user images.  
+The included keyring frames (`keyring_00–29.png`) are test assets for the swinging animation.
 
 ## Motivation
 
 **Do you know [Colorful Widget](https://apps.apple.com/us/app/colorful-widget-icon-themes/id1538946171?l=ko)?**
+
+<img src="https://github.com/user-attachments/assets/b81dabf0-17cd-4a88-82c3-9f1b46acbf0a" width=300>
 
 <!-- TODO: Add Colorful Widget GIF here -->
 <!-- ![Colorful Widget](assets/colorful-widget.gif) -->
@@ -30,7 +34,7 @@
 This app has special widget features you won't find anywhere else.
 One of them is **animated widgets** — and what makes it even more special is that users can insert **their own photos** into the animation.
 
-I needed this feature for @Keychy, an app I'm building — but I couldn't find how this was implemented anywhere publicly.
+I needed this feature for **[KEYCHY](https://apps.apple.com/us/app/%ED%82%A4%EC%B9%98-keychy/id6754951347)**, an app I'm building — but I couldn't find how this was implemented anywhere publicly.
 
 Apple doesn't provide any official way to animate widgets.
 WidgetKit deliberately blocks image swapping, scheduled updates, and animations.
