@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4C2526792F4D5A80003CC5AD"
-               BuildableName = "TTFusion.app"
-               BlueprintName = "TTFusion"
-               ReferencedContainer = "container:TTFusion.xcodeproj">
+               BuildableName = "Widgetnimation.app"
+               BlueprintName = "Widgetnimation"
+               ReferencedContainer = "container:Widgetnimation.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4C2526792F4D5A80003CC5AD"
-            BuildableName = "TTFusion.app"
-            BlueprintName = "TTFusion"
-            ReferencedContainer = "container:TTFusion.xcodeproj">
+            BuildableName = "Widgetnimation.app"
+            BlueprintName = "Widgetnimation"
+            ReferencedContainer = "container:Widgetnimation.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4C2526792F4D5A80003CC5AD"
-            BuildableName = "TTFusion.app"
-            BlueprintName = "TTFusion"
-            ReferencedContainer = "container:TTFusion.xcodeproj">
+            BuildableName = "Widgetnimation.app"
+            BlueprintName = "Widgetnimation"
+            ReferencedContainer = "container:Widgetnimation.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

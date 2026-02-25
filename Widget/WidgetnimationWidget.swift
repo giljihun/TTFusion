@@ -5,11 +5,8 @@
 //  Created by 길지훈 on 2026-02-24.
 //
 
-import os.log
 import SwiftUI
 import WidgetKit
-
-private let logger = Logger(subsystem: "com.Widgetnimation", category: "Widget")
 
 // MARK: - Animation Config
 
@@ -41,11 +38,7 @@ struct WidgetnimationProvider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetnimationEntry>) -> Void) {
-        logger.info("📍 getTimeline() 호출")
-
         let frames = loadCustomFrames()
-        logger.info("  커스텀 프레임: \(frames != nil ? "있음 (\(frames!.count)개)" : "없음")")
-
         let entry = WidgetnimationEntry(date: .now, customFrames: frames)
         completion(Timeline(entries: [entry], policy: .never))
     }
@@ -59,10 +52,7 @@ struct WidgetnimationProvider: TimelineProvider {
             FrameStorage.loadFrameImage(index: i)
         }
 
-        guard frames.count == AnimationConfig.frameCount else {
-            logger.error("❌ 프레임 로드 불완전: \(frames.count)/\(AnimationConfig.frameCount)")
-            return nil
-        }
+        guard frames.count == AnimationConfig.frameCount else { return nil }
 
         return frames
     }
@@ -221,11 +211,6 @@ struct WidgetnimationWidget: Widget {
 
 @main
 struct WidgetnimationWidgetBundle: WidgetBundle {
-
-    init() {
-        logger.info("📍 WidgetBundle.init()")
-    }
-
     var body: some Widget {
         WidgetnimationWidget()
     }
