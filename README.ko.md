@@ -1,14 +1,16 @@
 # Widgetnimation
 
+[![Platform](https://img.shields.io/badge/platform-iOS%2026+-blue.svg)](https://developer.apple.com/ios/)
+[![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)  
+
 **사용자 이미지가 들어간 애니메이션 iOS 위젯**
 ***— 커스텀 폰트 마스킹 트릭으로 구현.***
 
 > iOS에서 위젯 애니메이션을 구현하는 방법을 보여주는 샘플 앱입니다.
 
-[![Platform](https://img.shields.io/badge/platform-iOS%2026+-blue.svg)](https://developer.apple.com/ios/)
-[![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-> 🇺🇸 [English README](README.md)
+
+🇺🇸 [English README](README.md)
 
 ## Demo
 

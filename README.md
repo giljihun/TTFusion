@@ -1,13 +1,15 @@
 # Widgetnimation
 
+[![Platform](https://img.shields.io/badge/platform-iOS%2026+-blue.svg)](https://developer.apple.com/ios/)
+[![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)  
+
+
 **Animated iOS widget with user images**
 ***— using a custom font masking trick.***
 
 > A sample app demonstrating how to achieve widget animation on iOS.
 
-[![Platform](https://img.shields.io/badge/platform-iOS%2026+-blue.svg)](https://developer.apple.com/ios/)
-[![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)  
 🇰🇷 [한국어 README](README.ko.md)
 
 ## Demo
