@@ -3,10 +3,12 @@
 **Animated iOS widget with user images**
 ***— using a custom font masking trick.***
 
+> A sample app demonstrating how to achieve widget animation on iOS.
+
 [![Platform](https://img.shields.io/badge/platform-iOS%2026+-blue.svg)](https://developer.apple.com/ios/)
 [![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-> 🇰🇷 [한국어 README](README.ko.md)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)  
+🇰🇷 [한국어 README](README.ko.md)
 
 ## Demo
 
@@ -27,20 +29,26 @@ This app has special widget features you won't find anywhere else.
 One of them is **animated widgets** — and what makes it even more special is that users can insert **their own photos** into the animation.
 
 I needed this feature for @Keychy, an app I'm building — but I couldn't find how this was implemented anywhere publicly.
+
 Apple doesn't provide any official way to animate widgets.
 WidgetKit deliberately blocks image swapping, scheduled updates, and animations.
 Widgets are static snapshots. That's it.
 
 **So** — a different trick was needed.
 
-Figuring out how Colorful Widget pulled this off wasn't easy — there's virtually no documentation or resources on this technique.
-But I found a clue in Bryce Bostwick's [WidgetAnimation](https://github.com/brycebostwick/WidgetAnimation), and built my own implementation from there.
+> First, I found a clue in **Bryce Bostwick**'s [WidgetAnimation](https://github.com/brycebostwick/WidgetAnimation) — the trick explained below.
+
+> But what I really wanted to know was the next step. **Colorful Widget** didn't just play a TTF animation from the bundle — it let **users insert their own images** into the widget animation. How they pulled that off? Couldn't find it anywhere.  
+> ~~**Searched the entire internet. Nothing.**~~
+
+
+
 
 ## The Trick
 
 As mentioned above, widgets can't use `Animation`, `Timer`, or swap images at runtime. Everything is a frozen snapshot.
 
-But Apple does allow one thing to update in real time:
+But Apple does allow one thing to update in real time.
 
 ```swift
 Text(date, style: .timer)
@@ -55,7 +63,7 @@ This is rendered natively by the OS — not a SwiftUI animation, but a special s
 
 The core of this project is **BlinkMask** — a custom font I built from scratch.
 
-The idea is simple. This font has only two kinds of glyphs:
+The idea is simple. This font has only two kinds of glyphs.
 - Even digits → solid square ■ (opaque)
 - Odd digits → nothing (transparent)
 
@@ -65,15 +73,19 @@ By shifting each frame's timer reference date slightly, you can precisely contro
 
 ### 🫠 TTF + Masking
 
-Building on [Bryce Bostwick](https://github.com/brycebostwick/WidgetAnimation)'s `Text(.timer)` + custom font masking technique, I initially planned to prepare TTFs with all animation frames embedded as sbix glyphs, then generate a new TTF on the fly whenever the user picks an image. The same font masking technique, but with images baked directly into the font.
+Building on [Bryce Bostwick](https://github.com/brycebostwick/WidgetAnimation)'s `Text(.timer)` + custom font masking technique, I initially planned to prepare TTFs with all animation frames embedded as sbix glyphs, then generate a new TTF on the fly whenever the user picks an image.
 
-It didn't work. iOS widget extensions run in a sandboxed environment where runtime font registration (`CTFontManagerRegisterFontsForURL`) is not allowed. The main app can register fonts dynamically, but widgets run as a separate process and can only use fonts pre-registered in the bundle's Info.plist. No matter how you generate a TTF in the App Group, there's no way to make the widget recognize it as a font.
+The same font masking technique, but with images baked directly into the font.
+
+It didn't work. iOS widget extensions run in a sandboxed environment where runtime font registration (`CTFontManagerRegisterFontsForURL`) is not allowed.
+
+The main app can register fonts dynamically, but widgets run as a separate process and can only use fonts pre-registered in the bundle's Info.plist. No matter how you generate a TTF in the App Group, there's no way to make the widget recognize it as a font.
 
 ### 🔥 Only Masking with Images
 
 So I gave up on TTF generation and used only the font masking.
 
-All 30 composited images are stacked in a `ZStack`, each masked by a BlinkMask timer with a slightly different offset. By staggering the timing, only one frame is visible at a time:
+All 30 composited images are stacked in a `ZStack`, each masked by a BlinkMask timer with a slightly different offset. By staggering the timing, only one frame is visible at a time.
 
 | Time | Frame 0 | Frame 1 | Frame 2 | ... | Frame 29 |
 |------|---------|---------|---------|-----|----------|
@@ -85,7 +97,7 @@ All 30 composited images are stacked in a `ZStack`, each masked by a BlinkMask t
 
 Each frame appears for exactly `1/15`s (≈ 0.067s) then disappears → **frame-by-frame animation at 15 FPS**.
 
-How it works:
+### How it works
 
 1. User picks a photo → `FrameCompositor` composites it onto 30 keyring frames
 2. The composited PNGs are saved to an App Group
@@ -102,4 +114,4 @@ And [Colorful Widget](https://apps.apple.com/us/app/colorful-widget-icon-themes/
 
 ---
 
-Questions, Issues, and PRs are always welcome!
+> Questions, Issues, and PRs are always welcome!
