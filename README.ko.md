@@ -17,8 +17,10 @@
 <!-- TODO: 데모 GIF 추가 -->
 <!-- ![Demo](assets/demo.gif) -->
 
-> 사용자 이미지를 넣은 움직이는 위젯을 구현하는 **샘플 앱**입니다.
-  포함된 키링 프레임 (`keyring_00–29.png`)은 흔들리는 애니메이션용 테스트 에셋입니다.
+<img src="https://github.com/user-attachments/assets/bdd72f1b-dd7b-4007-85ac-6a003eb7cde5" width=300>
+
+사용자 이미지를 넣은 움직이는 위젯을 구현하는 **샘플 앱**입니다.  
+포함된 키링 프레임 (`keyring_00–29.png`)은 흔들리는 애니메이션용 테스트 에셋입니다.
 
 ## Motivation
 
@@ -27,10 +29,12 @@
 <!-- TODO: Colorful Widget GIF 추가 -->
 <!-- ![Colorful Widget](assets/colorful-widget.gif) -->
 
+<img src="https://github.com/user-attachments/assets/b81dabf0-17cd-4a88-82c3-9f1b46acbf0a" width=300>
+
 이 앱에는 다른 앱에서 볼 수 없는 특별한 위젯 기능들이 있습니다.
 그 중 하나가 **움직이는 위젯**인데, 더 특별한 건 사용자가 **직접 고른 사진**을 애니메이션에 넣을 수 있다는 것입니다.
 
-현재 개발 중인 @Keychy에 이 기능이 필요했지만,   
+현재 개발 중인 **[KEYCHY](https://apps.apple.com/us/app/%ED%82%A4%EC%B9%98-keychy/id6754951347)** 에 이 기능이 필요했지만,   
 대외적으로 구현 방법을 쉽게 찾을 수 없었습니다.
 
 가장 큰 이유는, 애플은 위젯 애니메이션을 공식적으로 제공하지 않습니다.
