@@ -52,7 +52,8 @@ Widgets are static snapshots. That's it.
 
 ## The Trick
 
-As mentioned above, widgets can't use `Animation`, `Timer`, or swap images at runtime. Everything is a frozen snapshot.
+As mentioned above, widgets can't use `Animation`, `Timer`, or swap images at runtime.
+Everything is a frozen snapshot.
 
 But Apple does allow one thing to update in real time.
 
@@ -63,7 +64,8 @@ Text(date, style: .timer)
 > TTF fonts can contain images. You can't swap images in a widget, but text does change.
 > If the text *is* the image? — **that's the trick.**
 
-This is rendered natively by the OS — not a SwiftUI animation, but a special system-level text renderer. And here's the key: **it supports custom fonts**.
+This is rendered natively by the OS — not a SwiftUI animation, but a special system-level text renderer.
+And here's the key: **it supports custom fonts**.
 
 ### BlinkMask
 
@@ -73,25 +75,35 @@ The idea is simple. This font has only two kinds of glyphs.
 - Even digits → solid square ■ (opaque)
 - Odd digits → nothing (transparent)
 
-The last digit of `Text(.timer)` changes every second: 0→1→2→...→9. With BlinkMask applied, even seconds show ■, odd seconds show nothing. A **binary switch that toggles every second**.
+The last digit of `Text(.timer)` changes every second: 0→1→2→...→9.
+With BlinkMask applied, even seconds show ■, odd seconds show nothing.
+A **binary switch that toggles every second**.
 
 By shifting each frame's timer reference date slightly, you can precisely control when each frame becomes visible.
 
 ### 🫠 TTF + Masking
 
-Building on [Bryce Bostwick](https://github.com/brycebostwick/WidgetAnimation)'s `Text(.timer)` + custom font masking technique, I initially planned to prepare TTFs with all animation frames embedded as sbix glyphs, then generate a new TTF on the fly whenever the user picks an image.
+Building on [Bryce Bostwick](https://github.com/brycebostwick/WidgetAnimation)'s `Text(.timer)` + custom font masking technique,
+I initially planned to prepare TTFs with all animation frames embedded as sbix glyphs,
+then generate a new TTF on the fly whenever the user picks an image.
 
 The same font masking technique, but with images baked directly into the font.
 
-It didn't work. iOS widget extensions run in a sandboxed environment where runtime font registration (`CTFontManagerRegisterFontsForURL`) is not allowed.
+It didn't work.
+iOS widget extensions run in a sandboxed environment
+where runtime font registration (`CTFontManagerRegisterFontsForURL`) is not allowed.
 
-The main app can register fonts dynamically, but widgets run as a separate process and can only use fonts pre-registered in the bundle's Info.plist. No matter how you generate a TTF in the App Group, there's no way to make the widget recognize it as a font.
+The main app can register fonts dynamically, but widgets run as a separate process
+and can only use fonts pre-registered in the bundle's Info.plist.
+No matter how you generate a TTF in the App Group, there's no way to make the widget recognize it as a font.
 
 ### 🔥 Only Masking with Images
 
 So I gave up on TTF generation and used only the font masking.
 
-All 30 composited images are stacked in a `ZStack`, each masked by a BlinkMask timer with a slightly different offset. By staggering the timing, only one frame is visible at a time.
+All 30 composited images are stacked in a `ZStack`,
+each masked by a BlinkMask timer with a slightly different offset.
+By staggering the timing, only one frame is visible at a time.
 
 | Time | Frame 0 | Frame 1 | Frame 2 | ... | Frame 29 |
 |------|---------|---------|---------|-----|----------|
