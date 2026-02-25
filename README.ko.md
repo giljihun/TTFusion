@@ -17,24 +17,24 @@
   포함된 키링 프레임 (`keyring_00–29.png`)은 흔들리는 애니메이션용 테스트 에셋입니다.
 
 ## Motivation
+
 **[Colorful Widget](https://apps.apple.com/us/app/colorful-widget-icon-themes/id1538946171?l=ko)이라는 앱을 아시나요?**
 
 <!-- TODO: Colorful Widget GIF 추가 -->
 <!-- ![Colorful Widget](assets/colorful-widget.gif) -->
 
-  이 앱에는 다른 앱에서 볼 수 없는 특별한 위젯 기능들이 있습니다.
-  그 중 하나가 **움직이는 위젯**인데, 더 특별한 건 사용자가 **직접 고른 사진**을 애니메이션에 넣을 수 있다는 것입니다.
+이 앱에는 다른 앱에서 볼 수 없는 특별한 위젯 기능들이 있습니다.
+그 중 하나가 **움직이는 위젯**인데, 더 특별한 건 사용자가 **직접 고른 사진**을 애니메이션에 넣을 수 있다는 것입니다.
 
-내가 현재 만드는 @Keychy 라는 앱에 이 기능이 필요했지만, 대외적으로 구현 방법을 쉽게 찾을 수 없었습니다.
-  애플은 위젯 애니메이션을 공식적으로 제공하지 않습니다.
-  WidgetKit은 이미지 전환, 주기적 업데이트, 애니메이션을 의도적으로 차단합니다.
-  위젯은 정적 스냅샷. 그게 끝입니다.
+현재 개발 중인 @Keychy 에 이 기능이 필요했지만, 대외적으로 구현 방법을 쉽게 찾을 수 없었습니다.
+애플은 위젯 애니메이션을 공식적으로 제공하지 않습니다.
+WidgetKit은 이미지 전환, 주기적 업데이트, 애니메이션을 의도적으로 차단합니다.
+위젯은 정적 스냅샷. 그게 끝입니다.
 
-**그래서** - 다른 트릭이 필요했습니다.
+**그래서** — 다른 트릭이 필요했습니다.
 
-  Colorful Widget이 이걸 어떻게 구현했는지 알아내는 건 쉽지 않았습니다 — 이 기법에 대한 문서나 자료가 거의 없었거든요.
-  하지만 Bryce Bostwick의
-  [WidgetAnimation](https://github.com/nicklama/WidgetAnimation)에서 실마리를 찾았고, 거기서부터 직접 구현했습니다.
+Colorful Widget이 이걸 어떻게 구현했는지 알아내는 건 쉽지 않았습니다 — 이 기법에 대한 문서나 자료가 거의 없었거든요.
+하지만 Bryce Bostwick의 [WidgetAnimation](https://github.com/brycebostwick/WidgetAnimation)에서 실마리를 찾았고, 거기서부터 직접 구현했습니다.
 
 ## The Trick
 
@@ -46,7 +46,8 @@
 Text(date, style: .timer)
 ```
 
-TTF 폰트에는 이미지를 삽입할 수 있습니다. 위젯에서 이미지를 교체할 수는 없지만, 텍스트는 변합니다. 텍스트 *자체가* 이미지라면? — 그게 트릭입니다.
+> TTF 폰트에는 이미지를 삽입할 수 있습니다. 위젯에서 이미지를 교체할 수는 없지만, 텍스트는 변합니다.
+> 텍스트 *자체가* 이미지라면? — **그게 트릭입니다.**
 
 이건 OS 레벨의 특수 텍스트 렌더러로 동작합니다 — SwiftUI 애니메이션이 아닙니다. 그리고 핵심은: **커스텀 폰트를 지원한다**는 것입니다.
 
@@ -62,9 +63,9 @@ TTF 폰트에는 이미지를 삽입할 수 있습니다. 위젯에서 이미지
 
 타이머의 기준 시간을 프레임마다 조금씩 밀면, 각 프레임이 보이는 타이밍을 정밀하게 제어할 수 있습니다.
 
-### 🫠 TTF + Masking 
+### 🫠 TTF + Masking
 
-[Bryce Bostwick](https://github.com/nicklama/WidgetAnimation)의 `Text(.timer)` + 커스텀 폰트 마스킹 기법을 기반으로, 처음에는 애니메이션의 모든 프레임을 sbix 글리프로 삽입한 TTF를 미리 준비해두고, 사용자가 이미지를 선택하면 그 이미지가 합성된 새로운 TTF를 실시간으로 생성하려 했습니다. 폰트 마스킹 기법을 그대로 활용하되, 폰트 자체에 이미지를 담는 방식이었습니다.
+[Bryce Bostwick](https://github.com/brycebostwick/WidgetAnimation)의 `Text(.timer)` + 커스텀 폰트 마스킹 기법을 기반으로, 처음에는 애니메이션의 모든 프레임을 sbix 글리프로 삽입한 TTF를 미리 준비해두고, 사용자가 이미지를 선택하면 그 이미지가 합성된 새로운 TTF를 실시간으로 생성하려 했습니다. 폰트 마스킹 기법을 그대로 활용하되, 폰트 자체에 이미지를 담는 방식이었습니다.
 
 하지만 실패했습니다. iOS 위젯 익스텐션은 샌드박스 환경에서 동작하기 때문에, 런타임에 새로운 폰트를 등록(`CTFontManagerRegisterFontsForURL`)할 수 없습니다. 메인 앱에서는 가능하지만, 위젯은 별도 프로세스로 실행되며 번들의 Info.plist에 미리 등록된 폰트만 사용할 수 있습니다. 즉, 아무리 TTF 파일을 App Group에 생성해도 위젯에서 폰트로 인식시킬 방법이 없었습니다.
 
@@ -91,11 +92,11 @@ TTF 폰트에는 이미지를 삽입할 수 있습니다. 위젯에서 이미지
 3. 위젯이 30개의 `Image` 뷰를 `ZStack`에 쌓고, 각각 BlinkMask 타이머로 마스킹
 4. 타이머 오프셋 차이로 한 번에 하나의 프레임만 표시
 
-결과는 성공이었습니다. 폰트 하나. 타이머 서른 개. 이게 전부입니다.
+> 결과는 성공이었습니다. **폰트 하나. 타이머 서른 개.** 이게 전부입니다.
 
 ## Acknowledgments
 
-이 프로젝트는 [Bryce Bostwick](https://medium.com/@brycebostwick)의 `Text(.timer)` + 커스텀 폰트 마스킹 기법에서 영감을 받았습니다. 그의 [WidgetAnimation](https://github.com/nicklama/WidgetAnimation) 레포가 없었다면 시작조차 못했을 겁니다. 진심으로 감사합니다.
+이 프로젝트는 [Bryce Bostwick](https://github.com/brycebostwick/WidgetAnimation)의 `Text(.timer)` + 커스텀 폰트 마스킹 기법에서 영감을 받았습니다. 그의 [WidgetAnimation](https://github.com/brycebostwick/WidgetAnimation) 레포가 없었다면 시작조차 못했을 겁니다. 진심으로 감사합니다.
 
 그리고 [Colorful Widget](https://apps.apple.com/us/app/colorful-widget-icon-themes/id1538946171?l=ko) — 이 모든 삽질의 시작점이 된 앱입니다.
 
