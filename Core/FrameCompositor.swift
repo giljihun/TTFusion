@@ -16,7 +16,7 @@ import UniformTypeIdentifiers
 ///
 /// ## 합성 흐름
 /// 1. 번들 PNG(keyring_00~29.png)에서 키링 프레임 로드
-/// 2. 사용자 이미지를 158×170으로 리사이즈
+/// 2. 사용자 이미지를 158×170 비율로 중앙 크롭 후 리사이즈
 /// 3. 프레임별 위치/회전 데이터를 적용하여 키링 프레임 위에 합성
 /// 4. 합성된 420×420 PNG 30개 반환
 ///
@@ -33,8 +33,8 @@ nonisolated enum FrameCompositor {
     /// 키링 프레임 이미지 크기 (420×420)
     static let frameSize = 420
 
-    /// 애니메이션 프레임 수
-    static let frameCount = 30
+    /// 애니메이션 프레임 수 (FrameStorage의 값을 단일 소스로 사용)
+    static let frameCount = FrameStorage.frameCount
 
     /// 합성 시 사용자 이미지 크기
     static let imageWidth = 158
@@ -63,7 +63,7 @@ nonisolated enum FrameCompositor {
 
     /// 사용자 이미지를 키링 프레임에 합성하여 30프레임 PNG를 생성합니다.
     ///
-    /// - Parameter image: 사용자 이미지 (어떤 크기든 가능, 내부에서 158×170으로 리사이즈)
+    /// - Parameter image: 사용자 이미지 (어떤 크기든 가능, 내부에서 158×170 비율로 중앙 크롭 후 리사이즈)
     /// - Returns: 30개 PNG Data 배열, 실패 시 nil
     static func generateFrames(from image: UIImage) -> [Data]? {
         guard let source = image.cgImage else { return nil }

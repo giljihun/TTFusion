@@ -12,7 +12,7 @@ import WidgetKit
 
 /// 레퍼런스: Bryce Bostwick의 WidgetAnimation
 enum AnimationConfig {
-    static let frameCount = 30
+    static let frameCount = FrameStorage.frameCount
     static let halfCount = frameCount / 2
     static let fps: CGFloat = 15.0
     static let frameDuration: CGFloat = 1.0 / fps
@@ -43,11 +43,9 @@ struct WidgetnimationProvider: TimelineProvider {
         completion(Timeline(entries: [entry], policy: .never))
     }
 
-    /// App Group에서 커스텀 PNG 프레임 30개를 로드합니다.
-    /// 30개 전부 존재해야 반환하고, 하나라도 없으면 nil을 반환합니다.
+    /// App Group에서 커스텀 PNG 프레임을 로드합니다.
+    /// 전부 로드 성공해야 반환하고, 하나라도 실패하면 nil을 반환합니다.
     private func loadCustomFrames() -> [UIImage]? {
-        guard FrameStorage.hasCustomFrames else { return nil }
-
         let frames = (0..<AnimationConfig.frameCount).compactMap { i in
             FrameStorage.loadFrameImage(index: i)
         }
@@ -109,7 +107,7 @@ struct WidgetnimationWidgetView: View {
         ZStack {
             Color.white
 
-            // 전반부 (프레임 0~14) — 전부 마스크 적용
+            // 전반부 (프레임 0~14) — 개별 BlinkMask로 순차 표시
             ZStack {
                 ForEach(0..<AnimationConfig.halfCount, id: \.self) { i in
                     imageFrame(image: frames[i], index: i, size: size)

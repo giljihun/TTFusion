@@ -89,9 +89,9 @@ nonisolated enum FrameStorage {
         return true
     }
 
-    /// App Group에 저장된 모든 프레임 URL을 반환합니다.
+    /// App Group에 저장된 프레임 중 존재하는 파일의 URL만 반환합니다.
     ///
-    /// 파일이 없거나 불완전하면 빈 배열을 반환합니다.
+    /// 일부만 존재하면 존재하는 것만 반환합니다 (0~29 중 누락 제외).
     static func allFrameURLs() -> [URL] {
         guard let dir = framesDirectory else { return [] }
 

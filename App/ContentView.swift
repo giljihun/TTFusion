@@ -160,8 +160,12 @@ struct ContentView: View {
         isGenerating = true
         defer { isGenerating = false }
 
-        // 1. 키링 프레임 + 사용자 이미지 합성 → PNG 30개
-        guard let pngFrames = FrameCompositor.generateFrames(from: image) else {
+        // 1. 키링 프레임 + 사용자 이미지 합성 → PNG 30개 (백그라운드 스레드)
+        let pngFrames = await Task.detached {
+            FrameCompositor.generateFrames(from: image)
+        }.value
+
+        guard let pngFrames else {
             resultMessage = "✗ 이미지 합성 실패"
             return
         }
