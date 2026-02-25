@@ -9,63 +9,73 @@ import PhotosUI
 import SwiftUI
 import WidgetKit
 
+/**
+ Main screen for compositing a user's photo into keyring widget frames.
+
+ The flow is:
+ 1) User picks a photo from their library
+ 2) Tap "Generate" — FrameCompositor composites 30 PNG frames
+ 3) Frames are saved to App Group, widget timeline is reloaded
+ 4) The widget immediately picks up the new frames
+ */
 struct ContentView: View {
     @State private var selectedItem: PhotosPickerItem?
     @State private var selectedImage: UIImage?
     @State private var isGenerating = false
     @State private var resultMessage: String?
 
-    // 디버그용
-    @State private var showDebugSection = false
-    @State private var debugResult: String?
+    @State private var hasFrames = FrameStorage.hasCustomFrames
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                headerSection
-                imagePickerSection
-                generateButton
-                resultSection
-                debugSection
-            }
-            .padding(.horizontal, 32)
-            .padding(.vertical, 20)
-        }
-    }
+        VStack(spacing: 16) {
+            Spacer()
 
-    // MARK: - 헤더
+            headerSection
+            imagePickerSection
+            generateButton
+            deleteButton
+            resultSection
+
+            Spacer()
+        }
+        .padding(.horizontal, 32)
+    }
 
     private var headerSection: some View {
         VStack(spacing: 8) {
             Image(systemName: "widget.small")
-                .font(.system(size: 50))
+                .font(.system(size: 32))
                 .foregroundStyle(.secondary)
-            Text("Widgetnimation")
-                .font(.title2.bold())
+            Text("Widgetnimation Sample 😆")
+                .font(.title3.bold())
         }
     }
 
-    // MARK: - 이미지 선택
-
     private var imagePickerSection: some View {
-        VStack(spacing: 12) {
-            if let selectedImage {
-                Image(uiImage: selectedImage)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 200, height: 200)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+        VStack(spacing: 28) {
+            Group {
+                if let selectedImage {
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .scaledToFill()
+                } else {
+                    Image(systemName: "questionmark.square.dashed")
+                        .font(.system(size: 60))
+                        .foregroundStyle(.quaternary)
+                }
             }
+            .frame(width: 160, height: 160)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
 
             PhotosPicker(
                 selection: $selectedItem,
                 matching: .images
             ) {
                 Label(
-                    selectedImage == nil ? "이미지 선택" : "다른 이미지 선택",
+                    selectedImage == nil ? "Select Image" : "Change Image",
                     systemImage: "photo.on.rectangle"
                 )
-                .frame(maxWidth: .infinity)
+                .frame(width: 160, height: 32)
             }
             .buttonStyle(.bordered)
             .onChange(of: selectedItem) { _, newItem in
@@ -74,73 +84,44 @@ struct ContentView: View {
         }
     }
 
-    // MARK: - 위젯 생성 버튼
-
     private var generateButton: some View {
         Button {
             Task { await generateWidgetFrames() }
         } label: {
             HStack {
                 if isGenerating { ProgressView().controlSize(.small) }
-                Text(isGenerating ? "생성 중..." : "위젯 이미지 생성")
+                Text(isGenerating ? "Generating..." : "Generate Widget")
             }
-            .frame(maxWidth: .infinity)
+            .frame(width: 160, height: 32)
         }
         .buttonStyle(.borderedProminent)
-        .controlSize(.large)
         .disabled(selectedImage == nil || isGenerating)
     }
 
-    // MARK: - 결과 표시
+    private var deleteButton: some View {
+        Button {
+            try? FrameStorage.deleteAllFrames()
+            WidgetCenter.shared.reloadAllTimelines()
+            hasFrames = false
+            selectedItem = nil
+            selectedImage = nil
+            resultMessage = nil
+        } label: {
+            Text("Delete Frames")
+                .frame(width: 160, height: 32)
+        }
+        .buttonStyle(.bordered)
+        .tint(.red)
+        .disabled(!hasFrames)
+    }
 
-    @ViewBuilder
     private var resultSection: some View {
-        if let resultMessage {
-            Text(resultMessage)
-                .font(.callout)
-                .foregroundStyle(resultMessage.contains("✓") ? .green : .red)
-                .multilineTextAlignment(.center)
-        }
+        Text(resultMessage ?? " ")
+            .font(.callout)
+            .foregroundStyle(resultMessage?.contains("✓") == true ? .green : .red)
+            .multilineTextAlignment(.center)
+            .opacity(resultMessage == nil ? 0 : 1)
     }
-
-    // MARK: - 디버그 섹션
-
-    private var debugSection: some View {
-        VStack(spacing: 12) {
-            Button {
-                withAnimation { showDebugSection.toggle() }
-            } label: {
-                HStack {
-                    Text("디버그")
-                        .font(.caption)
-                    Image(systemName: showDebugSection ? "chevron.up" : "chevron.down")
-                        .font(.caption2)
-                }
-                .foregroundStyle(.secondary)
-            }
-
-            if showDebugSection {
-                VStack(spacing: 8) {
-                    Button("App Group 프레임 삭제") {
-                        try? FrameStorage.deleteAllFrames()
-                        debugResult = "App Group 프레임 삭제됨"
-                        WidgetCenter.shared.reloadAllTimelines()
-                    }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
-                    .tint(.red)
-
-                    if let debugResult {
-                        Text(debugResult)
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-            }
-        }
-    }
-
-    // MARK: - 이미지 로드
 
     private func loadImage(from item: PhotosPickerItem?) async {
         guard let item,
@@ -149,42 +130,57 @@ struct ContentView: View {
             selectedImage = nil
             return
         }
-        selectedImage = image
+        // Normalize EXIF orientation — some photos store pixels
+        // in landscape and rely on metadata to rotate for display.
+        // Re-drawing into a new context bakes the rotation into
+        // the actual pixel data so it always displays upright.
+        selectedImage = image.normalizedOrientation()
         resultMessage = nil
     }
 
-    // MARK: - 위젯 프레임 생성 파이프라인
-
+    /**
+     The generation pipeline runs on a background thread:
+     1) FrameCompositor composites user image onto 30 keyring frames
+     2) FrameStorage saves the PNGs to the App Group container
+     3) WidgetCenter reloads all timelines so the widget picks up new frames
+     */
     private func generateWidgetFrames() async {
         guard let image = selectedImage else { return }
         isGenerating = true
         defer { isGenerating = false }
 
-        // 1. 키링 프레임 + 사용자 이미지 합성 → PNG 30개 (백그라운드 스레드)
         let pngFrames = await Task.detached {
             FrameCompositor.generateFrames(from: image)
         }.value
 
         guard let pngFrames else {
-            resultMessage = "✗ 이미지 합성 실패"
+            resultMessage = "✗ Compositing failed"
             return
         }
 
-        // 2. App Group에 PNG 저장
         do {
             try FrameStorage.saveAllFrames(pngFrames)
         } catch {
-            resultMessage = "✗ 저장 실패: \(error.localizedDescription)"
+            resultMessage = "✗ Save failed: \(error.localizedDescription)"
             return
         }
 
-        // 3. Widget 타임라인 리로드
         WidgetCenter.shared.reloadAllTimelines()
 
-        resultMessage = "✓ 위젯 이미지 생성 완료! 위젯을 확인하세요."
+        hasFrames = true
+        resultMessage = "✓ Done! Check your widget."
     }
 }
 
-#Preview {
-    ContentView()
+extension UIImage {
+    func normalizedOrientation() -> UIImage {
+        guard imageOrientation != .up else { return self }
+
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(in: CGRect(origin: .zero, size: size))
+        let normalized = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return normalized ?? self
+    }
 }

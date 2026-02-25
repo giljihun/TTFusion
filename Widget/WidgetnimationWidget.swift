@@ -8,69 +8,49 @@
 import SwiftUI
 import WidgetKit
 
-// MARK: - Animation Config
-
-/// 레퍼런스: Bryce Bostwick의 WidgetAnimation
 enum AnimationConfig {
     static let frameCount = FrameStorage.frameCount
     static let halfCount = frameCount / 2
+
+    // Animate at 15 frames per second.
+    // You can push this up to 30+ FPS, but 15 is smooth enough
+    // for a keyring swinging animation
     static let fps: CGFloat = 15.0
     static let frameDuration: CGFloat = 1.0 / fps
 
-    /// .timer가 0:00으로 리셋되지 않도록 충분한 과거 시점
+    // The blinking timer resets at 0:00, so we need a reference date
+    // far enough in the past that all our offset timers still start
+    // at a positive value. 60 seconds is more than enough headroom.
     static let referenceOffset: TimeInterval = 60
 
-    /// Text(.timer)의 최대 자릿수 ("H:MM:SS" 등 최대 9자리)
+    // A timer can display up to 9 characters ("H:MM:SS" + decimals).
+    // We reserve this width so the last character stays in a
+    // predictable position for the centering trick below.
     static let maxDigitSlots: CGFloat = 9
 }
 
-// MARK: - Timeline Provider
+/**
+ Shows a looping keyring animation using the "BlinkMask font" technique.
 
-struct WidgetnimationProvider: TimelineProvider {
+ The core idea: WidgetKit doesn't support frame-by-frame animation directly,
+ but `Text(.timer)` updates every second. By using a custom font where each
+ glyph is a solid square (or nothing), we can create a view that "blinks"
+ on and off at precise intervals — effectively a programmable mask.
 
-    func placeholder(in context: Context) -> WidgetnimationEntry {
-        WidgetnimationEntry(date: .now, customFrames: nil)
-    }
+ We split 30 frames into two halves (0–14 and 15–29):
+ 1) The first half is always on-screen, with each frame masked to appear
+    for exactly one `frameDuration` (1/15s) before the next takes over.
+ 2) The second half is stacked on top and masked with a 1-second blink,
+    so it alternates visibility with the first half every second.
 
-    func getSnapshot(in context: Context, completion: @escaping (WidgetnimationEntry) -> Void) {
-        let frames = loadCustomFrames()
-        completion(WidgetnimationEntry(date: .now, customFrames: frames))
-    }
-
-    func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetnimationEntry>) -> Void) {
-        let frames = loadCustomFrames()
-        let entry = WidgetnimationEntry(date: .now, customFrames: frames)
-        completion(Timeline(entries: [entry], policy: .never))
-    }
-
-    /// App Group에서 커스텀 PNG 프레임을 로드합니다.
-    /// 전부 로드 성공해야 반환하고, 하나라도 실패하면 nil을 반환합니다.
-    private func loadCustomFrames() -> [UIImage]? {
-        let frames = (0..<AnimationConfig.frameCount).compactMap { i in
-            FrameStorage.loadFrameImage(index: i)
-        }
-
-        guard frames.count == AnimationConfig.frameCount else { return nil }
-
-        return frames
-    }
-}
-
-// MARK: - Timeline Entry
-
-struct WidgetnimationEntry: TimelineEntry {
-    let date: Date
-    /// 커스텀 프레임 이미지 — nil이면 플레이스홀더 표시
-    let customFrames: [UIImage]?
-}
-
-// MARK: - Widget View
-
-/// 커스텀 프레임이 있으면 Image + BlinkMask 애니메이션, 없으면 안내 텍스트 표시
+ When the second half disappears, the first half's timers have already
+ advanced to their next set of glyphs — creating a seamless loop.
+ */
 struct WidgetnimationWidgetView: View {
     var entry: WidgetnimationEntry
 
-    /// 프레임/마스크 동기화를 위해 단일 기준 시각 사용 (static → 프로세스 내 1회 초기화)
+    // All timers must share the same reference date so their
+    // animations stay perfectly in sync across frames
     static let referenceDate = Date() - AnimationConfig.referenceOffset
 
     var body: some View {
@@ -85,14 +65,12 @@ struct WidgetnimationWidgetView: View {
         }
     }
 
-    // MARK: - 플레이스홀더 (커스텀 프레임 없을 때)
-
     private var placeholderView: some View {
         VStack(spacing: 8) {
             Image(systemName: "photo.badge.plus")
                 .font(.title)
                 .foregroundStyle(.secondary)
-            Text("앱에서 이미지를\n선택해주세요")
+            Text("Select an image\nin the app")
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -100,21 +78,24 @@ struct WidgetnimationWidgetView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
-    // MARK: - Image 기반 애니메이션
-
-    /// 합성 PNG를 Image()로 표시하고 BlinkMask로 프레임 타이밍을 제어합니다.
     private func imageAnimationView(frames: [UIImage], size: CGFloat) -> some View {
         ZStack {
             Color.white
 
-            // 전반부 (프레임 0~14) — 개별 BlinkMask로 순차 표시
+            // First half (frames 0–14): always on-screen.
+            // Frame 0 has NO mask — it's the fallback that prevents
+            // a white flash during the loop transition.
             ZStack {
-                ForEach(0..<AnimationConfig.halfCount, id: \.self) { i in
+                imageFrame(image: frames[0], index: 0, size: size, masked: false)
+
+                ForEach(1..<AnimationConfig.halfCount, id: \.self) { i in
                     imageFrame(image: frames[i], index: i, size: size)
                 }
             }
 
-            // 후반부 (프레임 15~29) — 전반부와 교대 표시
+            // Second half (frames 15–29): masked with a 1-second blink
+            // so it alternates with the first half every second.
+            // This is what makes the seamless looping possible.
             ZStack {
                 ForEach(AnimationConfig.halfCount..<AnimationConfig.frameCount, id: \.self) { i in
                     imageFrame(image: frames[i], index: i, size: size)
@@ -128,26 +109,41 @@ struct WidgetnimationWidgetView: View {
         .frame(width: size, height: size)
     }
 
-    /// 단일 이미지 프레임 — BlinkMask로 frameDuration 구간만 표시
-    private func imageFrame(image: UIImage, index: Int, size: CGFloat) -> some View {
-        Image(uiImage: image)
+    // Each frame is masked so it only appears during its specific
+    // time slot. The offset staggers each frame by one frameDuration.
+    // masked=false makes the frame always visible (used for frame 0 as fallback).
+    @ViewBuilder
+    private func imageFrame(image: UIImage, index: Int, size: CGFloat, masked: Bool = true) -> some View {
+        let base = Image(uiImage: image)
             .resizable()
             .scaledToFill()
             .frame(width: size, height: size)
             .clipped()
             .background(Color.white)
-            .mask(
+
+        if masked {
+            base.mask(
                 SimpleBlinkingView(blinkOffset: CGFloat(-index) * AnimationConfig.frameDuration)
                     .frame(width: size, height: size)
             )
+        } else {
+            base
+        }
     }
 }
 
-// MARK: - SimpleBlinkingView
+/**
+ A view that blinks on and off using a custom "BlinkMask" font.
 
-/// BlinkMask 폰트 기반 깜빡임 마스크
-/// - 개별 프레임: blinkOffset으로 frameDuration 간격의 시간차를 두어 순차 표시
-/// - 전반/후반 전환: blinkOffset=1로 초 단위 ON/OFF 전환
+ The font contains only two glyphs: a solid square for even digits
+ and nothing for odd digits. When used with `Text(.timer)`, the last
+ digit of the timer cycles 0→9 every 10 seconds — but since the font
+ only distinguishes even/odd, it effectively blinks on for 1 second,
+ off for 1 second, repeating forever.
+
+ The `blinkOffset` shifts the timer's reference date, letting us
+ control exactly *when* each frame becomes visible.
+ */
 struct SimpleBlinkingView: View {
     var blinkOffset: TimeInterval
 
@@ -163,15 +159,51 @@ struct SimpleBlinkingView: View {
     }
 }
 
-// MARK: - Text Extension
+struct WidgetnimationProvider: TimelineProvider {
+
+    func placeholder(in context: Context) -> WidgetnimationEntry {
+        WidgetnimationEntry(date: .now, customFrames: nil)
+    }
+
+    func getSnapshot(in context: Context, completion: @escaping (WidgetnimationEntry) -> Void) {
+        completion(WidgetnimationEntry(date: .now, customFrames: loadCustomFrames()))
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetnimationEntry>) -> Void) {
+        let entry = WidgetnimationEntry(date: .now, customFrames: loadCustomFrames())
+
+        // .never — the app explicitly calls reloadAllTimelines()
+        // whenever new frames are saved or deleted
+        completion(Timeline(entries: [entry], policy: .never))
+    }
+
+    private func loadCustomFrames() -> [UIImage]? {
+        let frames = (0..<AnimationConfig.frameCount).compactMap { i in
+            FrameStorage.loadFrameImage(index: i)
+        }
+        guard frames.count == AnimationConfig.frameCount else { return nil }
+        return frames
+    }
+}
+
+struct WidgetnimationEntry: TimelineEntry {
+    let date: Date
+    let customFrames: [UIImage]?
+}
 
 extension Text {
-    /// 타이머의 마지막 글자를 뷰 중앙에 배치하는 트릭
-    /// 1) size*9 너비 → 타이머 최대 9자리 수용
-    /// 2) .trailing 정렬 → 마지막 글자가 오른쪽 끝에 고정
-    /// 3) offset → 오른쪽 끝을 뷰 중앙으로 이동
-    ///    - topLeading: GeometryReader 내부 (좌상단 원점이므로 size*8 이동)
-    ///    - viewCenter: 일반 뷰 (중앙 원점이므로 size*4 이동)
+    /**
+     Positions the last character of a timer at the center of the view.
+
+     The trick works in three steps:
+     1) Set width to size×9 — enough room for a timer's maximum 9 digits
+     2) Use trailing alignment so the last digit is pinned to the right edge
+     3) Shift everything left so that right edge lands at the view's center
+
+     The multiplier differs based on coordinate origin:
+     - topLeading (GeometryReader): origin is top-left, so shift by size×8
+     - viewCenter (normal view): origin is center, so shift by size×4
+     */
     enum AnchorOrigin {
         case viewCenter
         case topLeading
@@ -179,8 +211,8 @@ extension Text {
 
     func centerLastCharacter(size: CGFloat, anchor: AnchorOrigin = .viewCenter) -> some View {
         let multiplier: CGFloat = switch anchor {
-        case .viewCenter: (AnimationConfig.maxDigitSlots - 1) / 2  // 4.0
-        case .topLeading: AnimationConfig.maxDigitSlots - 1         // 8.0
+        case .viewCenter: (AnimationConfig.maxDigitSlots - 1) / 2
+        case .topLeading: AnimationConfig.maxDigitSlots - 1
         }
         return self
             .frame(width: size * AnimationConfig.maxDigitSlots, height: size)
@@ -188,8 +220,6 @@ extension Text {
             .offset(x: -size * multiplier)
     }
 }
-
-// MARK: - Widget
 
 struct WidgetnimationWidget: Widget {
     let kind = "WidgetnimationWidget"
@@ -200,12 +230,10 @@ struct WidgetnimationWidget: Widget {
                 .containerBackground(.white, for: .widget)
         }
         .configurationDisplayName("Widgetnimation")
-        .description("키링 애니메이션 위젯")
+        .description("Animated keyring widget")
         .supportedFamilies([.systemSmall, .systemLarge])
     }
 }
-
-// MARK: - Widget Bundle
 
 @main
 struct WidgetnimationWidgetBundle: WidgetBundle {
