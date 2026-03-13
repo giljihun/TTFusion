@@ -12,7 +12,11 @@
 
 ## Demo
 
-<img src="https://github.com/user-attachments/assets/bdd72f1b-dd7b-4007-85ac-6a003eb7cde5" width=300>
+https://github.com/user-attachments/assets/83839ec9-3e96-4297-8b71-58cb87c609da
+
+<img width="400" alt="위젯니" src="https://github.com/user-attachments/assets/d2f07033-1bbb-4bd7-baa6-05f59c3f2408" />
+
+> 원하는 이미지를 선택하고 생성 -> 위젯 추가
 
 ## 동작 원리
 
