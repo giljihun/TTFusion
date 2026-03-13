@@ -12,7 +12,11 @@
 
 ## Demo
 
-<img src="https://github.com/user-attachments/assets/bdd72f1b-dd7b-4007-85ac-6a003eb7cde5" width=300>
+https://github.com/user-attachments/assets/6c922ae5-3193-414e-b7d9-857b4a07fad8
+
+<img width="350" alt="위젯니" src="https://github.com/user-attachments/assets/bae02f8a-575f-4680-9afb-ce2f5881a0d3" />
+
+> You can choose 1 image, and Generate Widget.
 
 ## How It Works
 
