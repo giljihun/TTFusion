@@ -9,19 +9,41 @@ import SwiftUI
 import UIKit
 import WidgetKit
 
-/**
- Arc Mask + clockHandRotationEffect 기반 위젯 애니메이션.
+// MARK: - Entry
 
- 기존 BlinkMask 폰트 방식을 대체:
- - 커스텀 폰트 불필요 (BlinkMask.otf 제거)
- - 투명 배경 지원 (잔상 없음)
- - 코드 대폭 단순화
+struct WidgetnimationEntry: TimelineEntry {
+    let date: Date
+    let customFrames: [UIImage]?
+}
 
- 원리:
- 1) 모든 프레임을 ZStack에 쌓고 각각 ArcShape로 마스킹
- 2) clockHandRotationEffect가 마스크를 회전시켜 프레임 순차 표시
- 3) 한 시점에 정확히 1개 프레임만 뷰포트에 존재
- */
+// MARK: - Provider
+
+struct WidgetnimationProvider: TimelineProvider {
+
+    func placeholder(in context: Context) -> WidgetnimationEntry {
+        WidgetnimationEntry(date: .now, customFrames: nil)
+    }
+
+    func getSnapshot(in context: Context, completion: @escaping (WidgetnimationEntry) -> Void) {
+        completion(WidgetnimationEntry(date: .now, customFrames: loadFrames()))
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetnimationEntry>) -> Void) {
+        let entry = WidgetnimationEntry(date: .now, customFrames: loadFrames())
+        // .never — only updates when the app calls reloadAllTimelines()
+        completion(Timeline(entries: [entry], policy: .never))
+    }
+
+    private func loadFrames() -> [UIImage]? {
+        let frames = (0..<FrameStorage.frameCount).compactMap {
+            FrameStorage.loadFrameImage(index: $0)
+        }
+        return frames.count == FrameStorage.frameCount ? frames : nil
+    }
+}
+
+// MARK: - Entry View
+
 struct WidgetnimationWidgetView: View {
     var entry: WidgetnimationEntry
 
@@ -30,12 +52,8 @@ struct WidgetnimationWidgetView: View {
             let size = min(geo.size.width, geo.size.height)
 
             if let frames = entry.customFrames {
-                AnimatedFrameView(
-                    frames: frames,
-                    size: size,
-                    cycleDuration: 2.0
-                )
-                .frame(width: geo.size.width, height: geo.size.height)
+                AnimatedFrameView(frames: frames, size: size, cycleDuration: 2.0)
+                    .frame(width: geo.size.width, height: geo.size.height)
             } else {
                 placeholderView
             }
@@ -56,36 +74,7 @@ struct WidgetnimationWidgetView: View {
     }
 }
 
-struct WidgetnimationProvider: TimelineProvider {
-
-    func placeholder(in context: Context) -> WidgetnimationEntry {
-        WidgetnimationEntry(date: .now, customFrames: nil)
-    }
-
-    func getSnapshot(in context: Context, completion: @escaping (WidgetnimationEntry) -> Void) {
-        completion(WidgetnimationEntry(date: .now, customFrames: loadCustomFrames()))
-    }
-
-    func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetnimationEntry>) -> Void) {
-        let entry = WidgetnimationEntry(date: .now, customFrames: loadCustomFrames())
-
-        // .never — 앱에서 reloadAllTimelines() 호출 시에만 업데이트
-        completion(Timeline(entries: [entry], policy: .never))
-    }
-
-    private func loadCustomFrames() -> [UIImage]? {
-        let frames = (0..<FrameStorage.frameCount).compactMap { i in
-            FrameStorage.loadFrameImage(index: i)
-        }
-        guard frames.count == FrameStorage.frameCount else { return nil }
-        return frames
-    }
-}
-
-struct WidgetnimationEntry: TimelineEntry {
-    let date: Date
-    let customFrames: [UIImage]?
-}
+// MARK: - Widget
 
 struct WidgetnimationWidget: Widget {
     let kind = "WidgetnimationWidget"
@@ -100,6 +89,8 @@ struct WidgetnimationWidget: Widget {
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
+
+// MARK: - Bundle
 
 @main
 struct WidgetnimationWidgetBundle: WidgetBundle {

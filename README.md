@@ -2,13 +2,13 @@
 
 [![Platform](https://img.shields.io/badge/platform-iOS%2026+-blue.svg)](https://developer.apple.com/ios/)
 [![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)  
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 
 **Animated iOS widget with user images**
-***— using a custom font masking trick.***
+***— no custom fonts needed.***
 
-> A sample app demonstrating how to achieve widget animation on iOS.
+> A sample app demonstrating how to achieve widget animation on iOS using the Arc Mask technique.
 
 🇰🇷 [한국어 README](README.ko.md)
 
@@ -16,10 +16,9 @@
 
 <img src="https://github.com/user-attachments/assets/bdd72f1b-dd7b-4007-85ac-6a003eb7cde5" width=300>
 
-<!-- TODO: Add Widgetnimation demo GIF here -->
-<!-- ![Demo](assets/demo.gif) -->
+<!-- TODO: Add updated demo GIF with transparent background -->
 
-This is a **sample app** that demonstrates animated widgets with user images.  
+This is a **sample app** that demonstrates animated widgets with user images.
 The included keyring frames (`keyring_00–29.png`) are test assets for the swinging animation.
 
 ## Motivation
@@ -27,9 +26,6 @@ The included keyring frames (`keyring_00–29.png`) are test assets for the swin
 **Do you know [Colorful Widget](https://apps.apple.com/us/app/colorful-widget-icon-themes/id1538946171?l=ko)?**
 
 <img src="https://github.com/user-attachments/assets/b81dabf0-17cd-4a88-82c3-9f1b46acbf0a" width=300>
-
-<!-- TODO: Add Colorful Widget GIF here -->
-<!-- ![Colorful Widget](assets/colorful-widget.gif) -->
 
 This app has special widget features you won't find anywhere else.
 One of them is **animated widgets** — and what makes it even more special is that users can insert **their own photos** into the animation.
@@ -42,91 +38,87 @@ Widgets are static snapshots. That's it.
 
 **So** — a different trick was needed.
 
-> First, I found a clue in **Bryce Bostwick**'s [WidgetAnimation](https://github.com/brycebostwick/WidgetAnimation) — the trick explained below.
+> First, I found a clue in **Bryce Bostwick**'s [WidgetAnimation](https://github.com/brycebostwick/WidgetAnimation) — the original `Text(.timer)` + custom font masking trick.
 
-> But what I really wanted to know was the next step. **Colorful Widget** didn't just play a TTF animation from the bundle — it let **users insert their own images** into the widget animation. How they pulled that off? Couldn't find it anywhere.  
-> ~~**Searched the entire internet. Nothing.**~~
+> But I wanted something better: **transparent background support**, **no font generation tools**, and **simpler code**.
 
+## The Trick: Arc Mask
 
+### How It Works
 
-
-## The Trick
-
-As mentioned above, widgets can't use `Animation`, `Timer`, or swap images at runtime.
-Everything is a frozen snapshot.
-
-But Apple does allow one thing to update in real time.
-
-```swift
-Text(date, style: .timer)
+```
+┌─────────────────────────────────────┐
+│  ZStack (all frames stacked)        │
+│                                     │
+│  frame[0]  ← masked by arc slice 0 │
+│  frame[1]  ← masked by arc slice 1 │
+│  frame[2]  ← masked by arc slice 2 │
+│  ...                                │
+│  frame[N]  ← masked by arc slice N │
+│                                     │
+│  Each arc slice = 360°/N            │
+│  clockHandRotationEffect rotates    │
+│  the mask → one frame visible       │
+│  at a time                          │
+└─────────────────────────────────────┘
 ```
 
-> TTF fonts can contain images. You can't swap images in a widget, but text does change.
-> If the text *is* the image? — **that's the trick.**
+1. **ArcShape** — draws an arc with a very large radius (50× view size), so the curvature ≈ 0 (appears as a straight line)
+2. Each frame gets its own arc slice (`360° / frameCount`)
+3. **`clockHandRotationEffect(period:)`** rotates the entire mask, sweeping each slice across the viewport in sequence
+4. At any given moment, exactly **one frame** is visible — no ghosting, even on transparent backgrounds
 
-This is rendered natively by the OS — not a SwiftUI animation, but a special system-level text renderer.
-And here's the key: **it supports custom fonts**.
+### Why Not Custom Fonts?
 
-### BlinkMask
+| | Custom Fonts (v1) | Arc Mask (v2) |
+|---|---|---|
+| Transparent BG | No (requires solid fill) | Yes |
+| Setup | Generate BlinkMask font | Drop PNG files |
+| Code complexity | ~160 lines + extensions | ~80 lines |
+| Max FPS | ~30 | ~30 |
 
-The core of this project is **BlinkMask** — a custom font I built from scratch.
+### Previous Approach (v1)
 
-The idea is simple. This font has only two kinds of glyphs.
-- Even digits → solid square ■ (opaque)
-- Odd digits → nothing (transparent)
+The original version used a `BlinkMask` custom font — a font where even digits render as solid squares (■) and odd digits render as nothing. Combined with `Text(.timer)`, this creates a binary switch that toggles every second, used as a mask to reveal frames one at a time.
 
-The last digit of `Text(.timer)` changes every second: 0→1→2→...→9.
-With BlinkMask applied, even seconds show ■, odd seconds show nothing.
-A **binary switch that toggles every second**.
+This worked, but required an opaque background to hide inactive frames.
 
-By shifting each frame's timer reference date slightly, you can precisely control when each frame becomes visible.
+> For the v1 implementation details, see [git history](../../commits/main) or [Bryce's original repo](https://github.com/brycebostwick/WidgetAnimation).
 
-### 🫠 TTF + Masking
+### User Image Compositing
 
-Building on [Bryce Bostwick](https://github.com/brycebostwick/WidgetAnimation)'s `Text(.timer)` + custom font masking technique,
-I initially planned to prepare TTFs with all animation frames embedded as sbix glyphs,
-then generate a new TTF on the fly whenever the user picks an image.
-
-The same font masking technique, but with images baked directly into the font.
-
-It didn't work.
-iOS widget extensions run in a sandboxed environment
-where runtime font registration (`CTFontManagerRegisterFontsForURL`) is not allowed.
-
-The main app can register fonts dynamically, but widgets run as a separate process
-and can only use fonts pre-registered in the bundle's Info.plist.
-No matter how you generate a TTF in the App Group, there's no way to make the widget recognize it as a font.
-
-### 🔥 Only Masking with Images
-
-So I gave up on TTF generation and used only the font masking.
-
-All 30 composited images are stacked in a `ZStack`,
-each masked by a BlinkMask timer with a slightly different offset.
-By staggering the timing, only one frame is visible at a time.
-
-| Time | Frame 0 | Frame 1 | Frame 2 | ... | Frame 29 |
-|------|---------|---------|---------|-----|----------|
-| 0.000s | ■ visible | | | | |
-| 0.067s | | ■ visible | | | |
-| 0.133s | | | ■ visible | | |
-| ... | | | | ... | |
-| 1.933s | | | | | ■ visible |
-
-Each frame appears for exactly `1/15`s (≈ 0.067s) then disappears → **frame-by-frame animation at 15 FPS**.
-
-### How it works
+What makes this more than just a static animation: users can insert **their own photos**.
 
 1. User picks a photo → `FrameCompositor` composites it onto 30 keyring frames
 2. The composited PNGs are saved to an App Group
-3. The widget stacks all 30 `Image` views in a `ZStack`, each masked by a BlinkMask timer
-4. Timer offset differences ensure only one frame is visible at a time
+3. The widget reads the frames and animates them with the Arc Mask technique
 
-> It worked. **One font. Thirty timers.** That's the entire trick.
+## Project Structure
+
+```
+App/
+  ContentView.swift          — Photo picker + frame generation UI
+Core/
+  FrameCompositor.swift      — Composites user image onto keyring frames
+  FrameStorage.swift         — App Group storage for composited frames
+Resources/
+  KeyringFrames/             — Template keyring frames (30 PNGs)
+Widget/
+  AnimatedFrameView.swift    — ArcShape + clockHandRotationEffect animation
+  WidgetnimationWidget.swift — Widget entry point + provider
+  Frameworks/                — ClockHandRotationEffect.xcframework
+```
+
+## Requirements
+
+- iOS 26.0+
+- `ClockHandRotationEffect.xcframework` (included, bitcode stripped)
 
 ## Acknowledgments
 
 This project was inspired by [Bryce Bostwick](https://github.com/brycebostwick/WidgetAnimation)'s `Text(.timer)` + custom font masking technique. Without his [WidgetAnimation](https://github.com/brycebostwick/WidgetAnimation) repo, I couldn't have even started. Huge thanks.
+
+The Arc Mask approach was developed for **[KEYCHY](https://apps.apple.com/us/app/%ED%82%A4%EC%B9%98-keychy/id6754951347)** and ported back to this sample project.
 
 And [Colorful Widget](https://apps.apple.com/us/app/colorful-widget-icon-themes/id1538946171?l=ko) — the app that started this whole journey.
 
